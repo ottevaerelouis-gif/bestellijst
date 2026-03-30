@@ -3,254 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>🍔 Bestellijst Restaurant</title>
+<title>Bestellijst Restaurant</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <style>
-:root {
-  --green: #22c55e; --green-bg: #f0fdf4; --green-border: #86efac;
-  --g50: #f9fafb; --g100: #f3f4f6; --g200: #e5e7eb; --g300: #d1d5db;
-  --g400: #9ca3af; --g500: #6b7280; --g600: #4b5563; --g700: #374151;
-  --g800: #1f2937; --g900: #111827; --r: 12px;
-}
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body {
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  background:var(--g50); color:var(--g900); padding-bottom:90px;
-  -webkit-user-select:none; user-select:none;
-}
-.header {
-  position:sticky; top:0; z-index:100; background:white;
-  border-bottom:1px solid var(--g200); padding:12px 16px 8px;
-}
-.header h1 { font-size:20px; font-weight:700; margin-bottom:8px; }
-.search-wrap { position:relative; }
-.search-wrap input {
-  width:100%; padding:10px 12px 10px 38px;
-  border:1px solid var(--g200); border-radius:10px;
-  font-size:15px; background:var(--g50); outline:none;
-}
-.search-wrap input:focus { border-color:var(--green); }
-.search-icon {
-  position:absolute; left:12px; top:50%; transform:translateY(-50%);
-  width:18px; height:18px; color:var(--g400); pointer-events:none;
-}
-.section-title {
-  font-size:17px; font-weight:700; padding:16px 16px 4px; color:var(--g800);
-  background:var(--g50);
-}
-.category-header {
-  font-size:13px; font-weight:600; text-transform:uppercase;
-  color:var(--g500); letter-spacing:0.5px; padding:12px 16px 6px;
-}
-.product-list { padding:0 12px; }
-.product-item {
-  display:flex; align-items:center; gap:12px; background:white;
-  border:2px solid var(--g200); border-radius:var(--r);
-  padding:12px 14px; margin-bottom:6px; cursor:pointer;
-  transition:all .15s;
-}
-.product-item.checked {
-  border-color:var(--green-border); background:var(--green-bg);
-}
-.check-circle {
-  width:28px; height:28px; border-radius:50%; flex-shrink:0;
-  border:2px solid var(--g300); display:flex; align-items:center;
-  justify-content:center; transition:all .15s;
-}
-.checked .check-circle {
-  border-color:var(--green); background:var(--green); color:white;
-}
-.product-info { flex:1; min-width:0; }
-.product-name { font-size:15px; font-weight:600; }
-.product-meta {
-  font-size:12px; color:var(--g500); margin-top:2px;
-  display:flex; flex-wrap:wrap; gap:4px 10px;
-}
-.bottom-bar {
-  position:fixed; bottom:0; left:0; right:0; z-index:200;
-  background:white; border-top:1px solid var(--g200);
-  padding:10px 16px; display:flex; gap:10px; align-items:center;
-}
-.counter {
-  background:var(--green); color:white; border-radius:20px;
-  padding:4px 12px; font-weight:700; font-size:14px; white-space:nowrap;
-}
-.bottom-bar button {
-  flex:1; padding:12px; border:none; border-radius:10px;
-  font-size:15px; font-weight:600; cursor:pointer;
-}
-.btn-send { background:var(--green); color:white; }
-.btn-send:disabled { opacity:0.4; cursor:default; }
-.btn-reset { background:var(--g100); color:var(--g700); }
-.modal-overlay {
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4);
-  z-index:300; align-items:center; justify-content:center;
-}
-.modal-overlay.show { display:flex; }
-.modal {
-  background:white; border-radius:16px; padding:24px; margin:20px;
-  max-width:320px; width:100%; text-align:center;
-}
-.modal h3 { margin-bottom:8px; }
-.modal p { color:var(--g500); font-size:14px; margin-bottom:16px; }
-.modal-btns { display:flex; gap:10px; }
-.modal-btns button {
-  flex:1; padding:10px; border:none; border-radius:10px;
-  font-size:14px; font-weight:600; cursor:pointer;
-}
-.toast {
-  position:fixed; top:20px; left:50%; transform:translateX(-50%);
-  background:var(--g800); color:white; padding:10px 20px;
-  border-radius:10px; font-size:14px; font-weight:500;
-  z-index:400; opacity:0; transition:opacity .3s;
-}
-.toast.show { opacity:1; }
-.empty-msg {
-  text-align:center; padding:40px 20px; color:var(--g400); font-size:15px;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;padding-bottom:80px}
+.header{background:#1a1a2e;color:#fff;padding:16px;text-align:center;position:sticky;top:0;z-index:10}
+.header h1{font-size:20px;margin-bottom:8px}
+.search{width:100%;padding:10px 12px;border:none;border-radius:8px;font-size:16px;background:#fff;margin-top:8px}
+.section-title{background:#16213e;color:#fff;padding:10px 16px;font-size:15px;font-weight:600;position:sticky;top:88px;z-index:5}
+.cat-title{background:#e8e8e8;padding:8px 16px;font-size:13px;font-weight:600;color:#555;text-transform:uppercase}
+.item{display:flex;align-items:center;padding:14px 16px;background:#fff;border-bottom:1px solid #eee;cursor:pointer;transition:background .15s}
+.item.checked{background:#e8f5e9}
+.item .check{width:28px;height:28px;border-radius:50%;border:2px solid #ccc;margin-right:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.item.checked .check{background:#4caf50;border-color:#4caf50;color:#fff}
+.item .info{flex:1}
+.item .name{font-size:15px;font-weight:500}
+.item .detail{font-size:12px;color:#888;margin-top:2px}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;padding:12px 16px;display:flex;gap:10px;z-index:10}
+.bottom-bar .counter{color:#fff;font-size:14px;display:flex;align-items:center;flex:1}
+.btn-send{background:#4caf50;color:#fff;border:none;padding:12px 20px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;flex-shrink:0}
+.btn-send:disabled{opacity:.4}
+.btn-reset{background:#e74c3c;color:#fff;border:none;padding:12px 16px;border-radius:8px;font-size:15px;cursor:pointer;flex-shrink:0}
 </style>
 </head>
 <body>
-
 <div class="header">
   <h1>🍔 Bestellijst Restaurant</h1>
-  <div class="search-wrap">
-    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="searchInput" placeholder="Zoek product...">
-  </div>
+  <input type="text" class="search" id="searchInput" placeholder="Zoek product...">
 </div>
-
-<div id="content"></div>
-
+<div id="list"></div>
 <div class="bottom-bar">
-  <div class="counter" id="counter">0</div>
-  <button class="btn-send" id="sendBtn" disabled>Verstuur</button>
+  <div class="counter"><span id="counter">0</span>&nbsp;geselecteerd</div>
   <button class="btn-reset" id="resetBtn">Reset</button>
+  <button class="btn-send" id="sendBtn" disabled>Verstuur</button>
 </div>
 
-<div class="modal-overlay" id="resetModal">
-  <div class="modal">
-    <h3>Lijst resetten?</h3>
-    <p>Alle vinkjes worden verwijderd.</p>
-    <div class="modal-btns">
-      <button style="background:var(--g100);color:var(--g700)" id="cancelReset">Annuleren</button>
-      <button style="background:#ef4444;color:white" id="confirmReset">Reset</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 <script>
-var products = [{"id": 1, "name": "Kleine zout zakjes", "nodVoor": "", "category": "Droogvoeding & Kruiding", "leverancier": "koffiedrukker.nl", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 0, "gewensteStock": 0, "levertermijn": "2-3 weken levertermijn", "section": "Ingrediënten"}, {"id": 2, "name": "Kleine peper zakjes", "nodVoor": "", "category": "Droogvoeding & Kruiding", "leverancier": "koffiedrukker.nl", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 0, "gewensteStock": 0, "levertermijn": "", "section": "Ingrediënten"}, {"id": 3, "name": "azijn", "nodVoor": "habanero, jalapeno, pickles", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 2, "gewensteStock": 6, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 4, "name": "peperbollen muntok", "nodVoor": "", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 5, "name": "fijn zout", "nodVoor": "", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 1, "gewensteStock": 5, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 6, "name": "grof zout", "nodVoor": "", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "zak", "minimumStock": 1, "gewensteStock": 3, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 7, "name": "zoet zure pickles (groot)", "nodVoor": "classic sauce", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "bokaal", "minimumStock": 2, "gewensteStock": 5, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 8, "name": "kappertjes", "nodVoor": "classic sauce", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "bokaal", "minimumStock": 1, "gewensteStock": 3, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 9, "name": "honing", "nodVoor": "special sauce, onion jam, habanero, pickles, jalapeno", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "flesje", "minimumStock": 4, "gewensteStock": 8, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 10, "name": "komijnpoeder", "nodVoor": "lemon mayo", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 11, "name": "laurierblad", "nodVoor": "habanero topping", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 12, "name": "kaneelstokje", "nodVoor": "habanero topping", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 13, "name": "mosterdzaad", "nodVoor": "pickles", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 14, "name": "limoen", "nodVoor": "lemon mayo", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 0, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 15, "name": "verse dille", "nodVoor": "lemon mayo", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 1, "gewensteStock": 3, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 16, "name": "gele ui", "nodVoor": "onion jam", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 0, "gewensteStock": 10, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 17, "name": "habanero", "nodVoor": "habanero topping", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "stuk", "minimumStock": 0, "gewensteStock": 10, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 18, "name": "jalapeno", "nodVoor": "jalapeno topping", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 0, "gewensteStock": 1.2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 19, "name": "komkommer", "nodVoor": "pickles", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "stuk", "minimumStock": 0, "gewensteStock": 7, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 20, "name": "look", "nodVoor": "cucumber", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "stuk", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 21, "name": "framboos vers (pakje 125gr)", "nodVoor": "Pink lemonade", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 0, "gewensteStock": 6, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 22, "name": "ketchup", "nodVoor": "", "category": "Sauzen", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 3, "gewensteStock": 10, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 23, "name": "mayonaise", "nodVoor": "", "category": "Sauzen", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "emmer", "minimumStock": 2, "gewensteStock": 4, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 24, "name": "tabasco", "nodVoor": "classic sauce, special sauce", "category": "Sauzen", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "flesje", "minimumStock": 2, "gewensteStock": 10, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 25, "name": "worchestshire", "nodVoor": "classic sauce", "category": "Sauzen", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "flesje", "minimumStock": 3, "gewensteStock": 10, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 26, "name": "gele mosterd", "nodVoor": "classic sauce", "category": "Sauzen", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "bokaal", "minimumStock": 1, "gewensteStock": 4, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 27, "name": "srirache", "nodVoor": "special sauce", "category": "Sauzen", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "flesje", "minimumStock": 3, "gewensteStock": 8, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 28, "name": "Arachide olie", "nodVoor": "", "category": "Vetten En Oliën", "leverancier": "sligro", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 29, "name": "geklarificeerde boter", "nodVoor": "", "category": "Vetten En Oliën", "leverancier": "sligro", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 3, "gewensteStock": 8, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 30, "name": "black angus (1,33kg/pak)", "nodVoor": "", "category": "Vlees / Zuivel / Vis", "leverancier": "la boucherie", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 0, "gewensteStock": 100, "levertermijn": "maandag (bestellen op donderdag)", "section": "Ingrediënten"}, {"id": 31, "name": "frieten", "nodVoor": "", "category": "Vlees / Zuivel / Vis", "leverancier": "sligro", "hoeveelheid": 1, "eenheid": "zak", "minimumStock": 4, "gewensteStock": 10, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 32, "name": "brioche brood buns", "nodVoor": "", "category": "Vlees / Zuivel / Vis", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 5, "gewensteStock": 10, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 33, "name": "cheddar", "nodVoor": "", "category": "Vlees / Zuivel / Vis", "leverancier": "spuntini", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 3, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 34, "name": "karaage", "nodVoor": "", "category": "Vlees / Zuivel / Vis", "leverancier": "Smaaki", "hoeveelheid": 1, "eenheid": "zak", "minimumStock": 2, "gewensteStock": 4, "levertermijn": "Donderdag", "section": "Ingrediënten"}, {"id": 35, "name": "veggie patty", "nodVoor": "", "category": "Vlees / Zuivel / Vis", "leverancier": "Spuntini", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 36, "name": "halal bacon", "nodVoor": "onion jam", "category": "Vlees / Zuivel / Vis", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 2, "gewensteStock": 3, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 37, "name": "supasawa", "nodVoor": "", "category": "Bar", "leverancier": "Deluxe Distillery", "hoeveelheid": 1, "eenheid": "bidon", "minimumStock": 1, "gewensteStock": 4, "levertermijn": "", "section": "Ingrediënten"}, {"id": 38, "name": "Cola", "nodVoor": "", "category": "Bar", "leverancier": "Spuntini", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 39, "name": "Cola zero", "nodVoor": "", "category": "Bar", "leverancier": "Spuntini", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 40, "name": "Pompelmoes", "nodVoor": "pink lemonade", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "stuk", "minimumStock": 4, "gewensteStock": 4, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 41, "name": "Passievrucht Puree (merk boiron)", "nodVoor": "Passion fruit lemonade", "category": "Bar", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "stuk", "minimumStock": 2, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 42, "name": "verse munt", "nodVoor": "Passion fruit lemonade", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "bundel", "minimumStock": 0, "gewensteStock": 3, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 43, "name": "suiker", "nodVoor": "", "category": "Droogvoeding & Kruiding", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 4, "gewensteStock": 10, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 44, "name": "Ijsbergsla", "nodVoor": "", "category": "Groenten & Fruit", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "zak", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Ingrediënten"}, {"id": 45, "name": "Paul's boutique tartaar", "nodVoor": "", "category": "Sauzen", "leverancier": "Paul's boutique", "hoeveelheid": 1, "eenheid": "emmer", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Dagelijks", "section": "Ingrediënten"}, {"id": 46, "name": "handzeep keuken & toilet", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "bidon", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 47, "name": "keukenpapierrol", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 48, "name": "wc gel", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 1, "gewensteStock": 4, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 49, "name": "nitrilhandschoenen", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 50, "name": "toiletpapier", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 3, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 51, "name": "rietjes", "nodVoor": "", "category": "Verpakking", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 52, "name": "servetten 33x33", "nodVoor": "", "category": "Verbuiksmiddelen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 53, "name": "kassarol bancontact / deliveroo", "nodVoor": "", "category": "Verbuiksmiddelen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 54, "name": "kassarol ticket & rekening 80x80x12", "nodVoor": "", "category": "Verbuiksmiddelen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 55, "name": "vuilniszak doorzichtig", "nodVoor": "", "category": "Verbuiksmiddelen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 56, "name": "vershoudfolie", "nodVoor": "", "category": "Verbuiksmiddelen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 57, "name": "grease foam killer (grill)", "nodVoor": "", "category": "Kuisen", "leverancier": "depreitere", "hoeveelheid": 1, "eenheid": "bidon", "minimumStock": 1, "gewensteStock": 4, "levertermijn": "7 dagen na bestelling", "section": "Non Food Verbruiksmiddelen"}, {"id": 58, "name": "mutlicleaner", "nodVoor": "", "category": "Kuisen", "leverancier": "depreitere", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 2, "gewensteStock": 5, "levertermijn": "7 dagen na bestelling", "section": "Non Food Verbruiksmiddelen"}, {"id": 59, "name": "vaatwasmiddel", "nodVoor": "", "category": "Kuisen", "leverancier": "depreitere", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "7 dagen na bestelling", "section": "Non Food Verbruiksmiddelen"}, {"id": 60, "name": "rinse dry (vaatwas)", "nodVoor": "", "category": "Kuisen", "leverancier": "depreitere", "hoeveelheid": 1, "eenheid": "kg", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "7 dagen na bestelling", "section": "Non Food Verbruiksmiddelen"}, {"id": 61, "name": "stickers FAVV", "nodVoor": "", "category": "Keukenmateriaal", "leverancier": "goldman", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 0, "gewensteStock": 1, "levertermijn": "Dagelijks", "section": "Non Food Verbruiksmiddelen"}, {"id": 62, "name": "javel", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "bidon", "minimumStock": 0, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 63, "name": "dreft", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "bidon", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 64, "name": "kuisvodje", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 65, "name": "metaalspons", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 66, "name": "keukenhanddoek", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 0, "gewensteStock": 1, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 67, "name": "dweil vileda", "nodVoor": "", "category": "Kuisen", "leverancier": "Euroshop", "hoeveelheid": 1, "eenheid": "stuk", "minimumStock": 0, "gewensteStock": 2, "levertermijn": "dagelijks", "section": "Non Food Verbruiksmiddelen"}, {"id": 68, "name": "Co2 flessen", "nodVoor": "", "category": "Bar", "leverancier": "Pauwels", "hoeveelheid": 1, "eenheid": "fles", "minimumStock": 2, "gewensteStock": 3, "levertermijn": "Dagelijks", "section": "Non Food Verbruiksmiddelen"}, {"id": 69, "name": "burgervel verpakking", "nodVoor": "", "category": "Verpakking", "leverancier": "Wellembal", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 5, "gewensteStock": 0, "levertermijn": "3-4 maanden", "section": "Non Food Verbruiksmiddelen"}, {"id": 70, "name": "take away zak", "nodVoor": "", "category": "Verpakking", "leverancier": "Biopack", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 0, "gewensteStock": 1, "levertermijn": "", "section": "Non Food Verbruiksmiddelen"}, {"id": 71, "name": "frietdoosje", "nodVoor": "", "category": "Verpakking", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 72, "name": "frietpapier", "nodVoor": "", "category": "Verpakking", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pak", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 73, "name": "bekers", "nodVoor": "", "category": "Verpakking", "leverancier": "Biopack", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "", "section": "Non Food Verbruiksmiddelen"}, {"id": 74, "name": "beker deksel", "nodVoor": "", "category": "Verpakking", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 75, "name": "sauspotje", "nodVoor": "", "category": "Verpakking", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 76, "name": "sauspotje deksel", "nodVoor": "", "category": "Verpakking", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "doos", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 77, "name": "wasmiddel wasmachine", "nodVoor": "", "category": "Kuisen", "leverancier": "BJP", "hoeveelheid": 1, "eenheid": "bidon", "minimumStock": 1, "gewensteStock": 2, "levertermijn": "Elke donderdag of vrijdag", "section": "Non Food Verbruiksmiddelen"}, {"id": 78, "name": "tandenstokers", "nodVoor": "", "category": "Verbuiksmiddelen", "leverancier": "Sligro", "hoeveelheid": 1, "eenheid": "pakje", "minimumStock": 1, "gewensteStock": 1, "levertermijn": "Leveren op dinsdag en vrijdag", "section": "Non Food Verbruiksmiddelen"}];
+var products = [{"id": 1, "name": "Kleine zout zakjes", "category": "droogvoeding & kruiding", "leverancier": "koffiedrukker.nl", "eenheid": "doos", "gewensteStock": 0, "section": "Ingrediënten"}, {"id": 2, "name": "Kleine peper zakjes", "category": "droogvoeding & kruiding", "leverancier": "koffiedrukker.nl", "eenheid": "doos", "gewensteStock": 0, "section": "Ingrediënten"}, {"id": 3, "name": "azijn", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "fles", "gewensteStock": 6, "section": "Ingrediënten"}, {"id": 4, "name": "peperbollen muntok", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "kg", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 5, "name": "fijn zout", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "kg", "gewensteStock": 5, "section": "Ingrediënten"}, {"id": 6, "name": "grof zout", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "zak", "gewensteStock": 3, "section": "Ingrediënten"}, {"id": 7, "name": "zoet zure pickles (groot)", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "bokaal", "gewensteStock": 5, "section": "Ingrediënten"}, {"id": 8, "name": "kappertjes", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "bokaal", "gewensteStock": 3, "section": "Ingrediënten"}, {"id": 9, "name": "honing", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "flesje", "gewensteStock": 8, "section": "Ingrediënten"}, {"id": 10, "name": "komijnpoeder", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 11, "name": "laurierblad", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 12, "name": "kaneelstokje", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 13, "name": "mosterdzaad", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 14, "name": "limoen", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "doos", "gewensteStock": 1, "section": "Ingrediënten"}, {"id": 15, "name": "verse dille", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 3, "section": "Ingrediënten"}, {"id": 16, "name": "gele ui", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "kg", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 17, "name": "habanero", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "stuk", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 18, "name": "jalapeno", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "kg", "gewensteStock": "1,2", "section": "Ingrediënten"}, {"id": 19, "name": "komkommer", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "stuk", "gewensteStock": 7, "section": "Ingrediënten"}, {"id": 20, "name": "look", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "stuk", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 21, "name": "framboos vers (pakje 125gr)", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 6, "section": "Ingrediënten"}, {"id": 22, "name": "ketchup", "category": "sauzen", "leverancier": "spuntini", "eenheid": "fles", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 23, "name": "mayonaise", "category": "sauzen", "leverancier": "spuntini", "eenheid": "emmer", "gewensteStock": 4, "section": "Ingrediënten"}, {"id": 24, "name": "tabasco", "category": "sauzen", "leverancier": "spuntini", "eenheid": "flesje", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 25, "name": "worchestshire", "category": "sauzen", "leverancier": "spuntini", "eenheid": "flesje", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 26, "name": "gele mosterd", "category": "sauzen", "leverancier": "spuntini", "eenheid": "bokaal", "gewensteStock": 4, "section": "Ingrediënten"}, {"id": 27, "name": "srirache", "category": "sauzen", "leverancier": "spuntini", "eenheid": "flesje", "gewensteStock": 8, "section": "Ingrediënten"}, {"id": 28, "name": "Arachide olie", "category": "Vetten en oliën", "leverancier": "sligro", "eenheid": "fles", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 29, "name": "geklarificeerde boter", "category": "Vetten en oliën", "leverancier": "sligro", "eenheid": "fles", "gewensteStock": 8, "section": "Ingrediënten"}, {"id": 30, "name": "black angus (1,33kg/pak)", "category": "vlees / zuivel / vis", "leverancier": "la boucherie", "eenheid": "kg", "gewensteStock": 100, "section": "Ingrediënten"}, {"id": 31, "name": "frieten", "category": "vlees / zuivel / vis", "leverancier": "sligro", "eenheid": "zak", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 32, "name": "brioche brood buns", "category": "vlees / zuivel / vis", "leverancier": "spuntini", "eenheid": "doos", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 33, "name": "cheddar", "category": "vlees / zuivel / vis", "leverancier": "spuntini", "eenheid": "doos", "gewensteStock": 3, "section": "Ingrediënten"}, {"id": 34, "name": "karaage", "category": "vlees / zuivel / vis", "leverancier": "Smaaki", "eenheid": "zak", "gewensteStock": 4, "section": "Ingrediënten"}, {"id": 35, "name": "veggie patty", "category": "vlees / zuivel / vis", "leverancier": "Spuntini", "eenheid": "doos", "gewensteStock": 1, "section": "Ingrediënten"}, {"id": 36, "name": "halal bacon", "category": "vlees / zuivel / vis", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 3, "section": "Ingrediënten"}, {"id": 37, "name": "supasawa", "category": "bar", "leverancier": "Deluxe Distillery", "eenheid": "bidon", "gewensteStock": 4, "section": "Ingrediënten"}, {"id": 38, "name": "Cola", "category": "bar", "leverancier": "Spuntini", "eenheid": "pak", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 39, "name": "Cola zero", "category": "bar", "leverancier": "Spuntini", "eenheid": "pak", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 40, "name": "Pompelmoes", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "stuk", "gewensteStock": 4, "section": "Ingrediënten"}, {"id": 41, "name": "Passievrucht Puree (merk boiron)", "category": "bar", "leverancier": "Sligro", "eenheid": "stuk", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 42, "name": "verse munt", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "bundel", "gewensteStock": 3, "section": "Ingrediënten"}, {"id": 43, "name": "suiker", "category": "droogvoeding & kruiding", "leverancier": "Sligro", "eenheid": "kg", "gewensteStock": 10, "section": "Ingrediënten"}, {"id": 44, "name": "Ijsbergsla", "category": "groenten & fruit", "leverancier": "Sligro", "eenheid": "zak", "gewensteStock": 2, "section": "Ingrediënten"}, {"id": 45, "name": "Paul's boutique tartaar", "category": "sauzen", "leverancier": "Paul's boutique", "eenheid": "emmer", "gewensteStock": 1, "section": "Ingrediënten"}, {"id": 46, "name": "Kip burger", "category": "vlees / zuivel / vis", "leverancier": "Spuntini", "eenheid": "doos", "gewensteStock": 1, "section": "Ingrediënten"}, {"id": 47, "name": "handzeep keuken & toilet", "category": "kuisen", "leverancier": "BJP", "eenheid": "bidon", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 48, "name": "keukenpapierrol", "category": "kuisen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 49, "name": "wc gel", "category": "kuisen", "leverancier": "BJP", "eenheid": "fles", "gewensteStock": 4, "section": "Non Food Verbruiksmiddelen"}, {"id": 50, "name": "nitrilhandschoenen", "category": "kuisen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 51, "name": "toiletpapier", "category": "kuisen", "leverancier": "BJP", "eenheid": "pak", "gewensteStock": 3, "section": "Non Food Verbruiksmiddelen"}, {"id": 52, "name": "rietjes", "category": "verpakking", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 53, "name": "servetten 33x33", "category": "verbuiksmiddelen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 54, "name": "kassarol bancontact / deliveroo", "category": "verbuiksmiddelen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 55, "name": "kassarol ticket & rekening 80x80x12", "category": "verbuiksmiddelen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 56, "name": "vuilniszak doorzichtig", "category": "verbuiksmiddelen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 57, "name": "vershoudfolie", "category": "verbuiksmiddelen", "leverancier": "BJP", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 58, "name": "grease foam killer (grill)", "category": "kuisen", "leverancier": "depreitere", "eenheid": "bidon", "gewensteStock": 4, "section": "Non Food Verbruiksmiddelen"}, {"id": 59, "name": "mutlicleaner", "category": "kuisen", "leverancier": "depreitere", "eenheid": "pakje", "gewensteStock": 5, "section": "Non Food Verbruiksmiddelen"}, {"id": 60, "name": "vaatwasmiddel", "category": "kuisen", "leverancier": "depreitere", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 61, "name": "rinse dry (vaatwas)", "category": "kuisen", "leverancier": "depreitere", "eenheid": "kg", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 62, "name": "stickers FAVV", "category": "keukenmateriaal", "leverancier": "goldman", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 63, "name": "javel", "category": "kuisen", "leverancier": "BJP", "eenheid": "bidon", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 64, "name": "dreft", "category": "kuisen", "leverancier": "BJP", "eenheid": "bidon", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 65, "name": "kuisvodje", "category": "kuisen", "leverancier": "BJP", "eenheid": "pak", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 66, "name": "metaalspons", "category": "kuisen", "leverancier": "BJP", "eenheid": "pak", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 67, "name": "keukenhanddoek", "category": "kuisen", "leverancier": "BJP", "eenheid": "fles", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 68, "name": "dweil vileda", "category": "kuisen", "leverancier": "Euroshop", "eenheid": "stuk", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 69, "name": "Co2 flessen", "category": "bar", "leverancier": "Pauwels", "eenheid": "fles", "gewensteStock": 3, "section": "Non Food Verbruiksmiddelen"}, {"id": 70, "name": "burgervel verpakking", "category": "verpakking", "leverancier": "Wellembal", "eenheid": "doos", "gewensteStock": 0, "section": "Non Food Verbruiksmiddelen"}, {"id": 71, "name": "take away zak", "category": "verpakking", "leverancier": "Biopack", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 72, "name": "frietdoosje", "category": "verpakking", "leverancier": "Sligro", "eenheid": "pak", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 73, "name": "frietpapier", "category": "verpakking", "leverancier": "Sligro", "eenheid": "pak", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 74, "name": "bekers", "category": "verpakking", "leverancier": "Biopack", "eenheid": "doos", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 75, "name": "beker deksel", "category": "verpakking", "leverancier": "Sligro", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 76, "name": "sauspotje", "category": "verpakking", "leverancier": "Sligro", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 77, "name": "sauspotje deksel", "category": "verpakking", "leverancier": "Sligro", "eenheid": "doos", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 78, "name": "wasmiddel wasmachine", "category": "kuisen", "leverancier": "BJP", "eenheid": "bidon", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}, {"id": 79, "name": "tandenstokers", "category": "verbuiksmiddelen", "leverancier": "Sligro", "eenheid": "pakje", "gewensteStock": 1, "section": "Non Food Verbruiksmiddelen"}, {"id": 80, "name": "rekkers", "category": "verbuiksmiddelen", "leverancier": "", "eenheid": "zak", "gewensteStock": 2, "section": "Non Food Verbruiksmiddelen"}];
 
 var checked = JSON.parse(localStorage.getItem('bestellijst_checked') || '{}');
-var searchTerm = '';
 
-function save() { localStorage.setItem('bestellijst_checked', JSON.stringify(checked)); }
-
-function toggle(name) {
-  if (checked[name]) delete checked[name];
-  else checked[name] = true;
-  save(); render();
+function saveChecked() {
+  localStorage.setItem('bestellijst_checked', JSON.stringify(checked));
 }
 
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show';
-  setTimeout(function() { t.className = 'toast'; }, 2000);
-}
-
-function render() {
-  var filtered = products;
-  if (searchTerm) {
-    var s = searchTerm.toLowerCase();
-    filtered = products.filter(function(p) {
-      return p.name.toLowerCase().indexOf(s) !== -1 ||
-             (p.leverancier && p.leverancier.toLowerCase().indexOf(s) !== -1) ||
-             (p.category && p.category.toLowerCase().indexOf(s) !== -1);
-    });
-  }
-
-  // Group by section then category
-  var sections = {};
-  var sectionOrder = [];
-  filtered.forEach(function(p) {
-    if (!sections[p.section]) { sections[p.section] = {}; sectionOrder.push(p.section); }
-    if (!sections[p.section][p.category]) sections[p.section][p.category] = [];
-    sections[p.section][p.category].push(p);
-  });
-
-  var html = '';
-  if (filtered.length === 0) {
-    html = '<div class="empty-msg">Geen producten gevonden</div>';
-  } else {
-    sectionOrder.forEach(function(sec) {
-      html += '<div class="section-title">' + sec + '</div>';
-      var cats = Object.keys(sections[sec]);
-      cats.forEach(function(cat) {
-        html += '<div class="category-header">' + cat + '</div><div class="product-list">';
-        sections[sec][cat].forEach(function(p) {
-          var isChecked = !!checked[p.name];
-          html += '<div class="product-item' + (isChecked ? ' checked' : '') + '" onclick="toggle(\''+p.name.replace(/'/g,"\\'")+'\')">'+
-            '<div class="check-circle">' + (isChecked ? '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>' : '') + '</div>'+
-            '<div class="product-info"><div class="product-name">'+p.name+'</div>'+
-            '<div class="product-meta">'+
-            
-            (p.levertermijn ? '<span>⏰ '+p.levertermijn+'</span>' : '')+
-            (p.minimumStock ? '<span>📦 Min: '+p.minimumStock+'</span>' : '')+
-            (p.nodVoor ? '<span>🍽️ '+p.nodVoor+'</span>' : '')+
-            '</div></div></div>';
-        });
-        html += '</div>';
-      });
-    });
-  }
-  document.getElementById('content').innerHTML = html;
-
-  var count = Object.keys(checked).length;
-  document.getElementById('counter').textContent = count + ' geselecteerd';
+function updateCounter() {
+  var count = Object.keys(checked).filter(function(k){return checked[k]}).length;
+  document.getElementById('counter').textContent = count;
   document.getElementById('sendBtn').disabled = count === 0;
 }
 
-document.getElementById('searchInput').addEventListener('input', function(e) {
-  searchTerm = e.target.value; render();
+function render(filter) {
+  var el = document.getElementById('list');
+  var html = '';
+  var currentSection = '';
+  var currentCat = '';
+  var lowerFilter = (filter||'').toLowerCase();
+
+  products.forEach(function(p) {
+    if (lowerFilter && p.name.toLowerCase().indexOf(lowerFilter) === -1) return;
+    if (p.section !== currentSection) {
+      currentSection = p.section;
+      currentCat = '';
+      html += '<div class="section-title">' + currentSection + '</div>';
+    }
+    if (p.category !== currentCat) {
+      currentCat = p.category;
+      html += '<div class="cat-title">' + currentCat + '</div>';
+    }
+    var isChecked = checked[p.id];
+    html += '<div class="item' + (isChecked ? ' checked' : '') + '" data-id="' + p.id + '">';
+    html += '<div class="check">' + (isChecked ? '✓' : '') + '</div>';
+    html += '<div class="info"><div class="name">' + p.name + '</div>';
+    html += '<div class="detail">' + p.eenheid + '</div>';
+    html += '</div></div>';
+  });
+
+  el.innerHTML = html;
+}
+
+document.getElementById('list').addEventListener('click', function(e) {
+  var item = e.target.closest('.item');
+  if (!item) return;
+  var id = item.getAttribute('data-id');
+  checked[id] = !checked[id];
+  if (!checked[id]) delete checked[id];
+  saveChecked();
+  updateCounter();
+  item.classList.toggle('checked');
+  item.querySelector('.check').textContent = checked[id] ? '✓' : '';
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  render(this.value);
 });
 
 document.getElementById('resetBtn').addEventListener('click', function() {
-  document.getElementById('resetModal').className = 'modal-overlay show';
-});
-document.getElementById('cancelReset').addEventListener('click', function() {
-  document.getElementById('resetModal').className = 'modal-overlay';
-});
-document.getElementById('confirmReset').addEventListener('click', function() {
-  document.getElementById('resetModal').className = 'modal-overlay';
-  checked = {}; save(); render(); showToast('Lijst gereset \u2713');
+  if (!confirm('Zeker weten? Alle selecties worden gewist.')) return;
+  checked = {};
+  saveChecked();
+  updateCounter();
+  render(document.getElementById('searchInput').value);
 });
 
 document.getElementById('sendBtn').addEventListener('click', function() {
-  var items = products.filter(function(p) { return checked[p.name]; });
-  items.sort(function(a,b) { return (a.leverancier||'').localeCompare(b.leverancier||''); });
+  var items = products.filter(function(p){return checked[p.id]});
+  items.sort(function(a,b){return (a.leverancier||'').localeCompare(b.leverancier||'')});
   var rows = [['Leverancier','Productnaam','Gewenste Hoeveelheid','Eenheid']];
   items.forEach(function(p) {
     rows.push([p.leverancier||'', p.name, p.gewensteStock||'', p.eenheid||'']);
   });
-  if (typeof XLSX !== 'undefined') {
-    var ws = XLSX.utils.aoa_to_sheet(rows);
-    ws['!cols'] = [{wch:30},{wch:20},{wch:20},{wch:15},{wch:15},{wch:20}];
-    var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Bestelling');
-    var d = new Date();
-    var fn = 'bestelling_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'.xlsx';
-    XLSX.writeFile(wb, fn);
-    showToast('Excel gedownload \u2713');
-  } else {
-    showToast('Excel library niet geladen - check je internet');
-  }
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Bestelling');
+  XLSX.writeFile(wb, 'bestelling_' + new Date().toISOString().slice(0,10) + '.xlsx');
 });
 
 render();
+updateCounter();
 </script>
 </body>
 </html>
